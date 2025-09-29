@@ -1,0 +1,44 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Расчет процентов по вкладу</title>
+    <link rel="stylesheet" href="/static/styles/calculation_style.css">
+</head>
+<body>
+    <header>
+        <a href="/" class="home-link">Домой</a>
+        <h1>КАЛЬКУЛЯТОР ПРОЦЕНТОВ ПО ВКЛАДАМ</h1>
+    </header>
+
+    <div class="calculation-container">
+        <h2>Расчет процентов по вкладу</h2>
+
+        <div class="deposit-input">
+            <h3>Введите параметры вклада:</h3>
+            <div class="input-group">
+                <label>Сумма вклада (руб):</label>
+                <input type="number" placeholder="Введите сумму вклада">
+            </div>
+        </div>
+
+        <div class="months-list">
+            {{ range .months }}
+            <div class="month-item">
+                <div class="month-header">
+                    <img src="http://127.0.0.1:9000/img/{{ .Image }}" alt="{{ .Name }}" class="month-image">
+                    <h3>{{ .Name }}</h3>
+                </div>
+                
+                <div class="properties">
+                    <p><strong>Количество дней:</strong> {{ .Days }}</p>
+                    <p><strong>Процентная ставка:</strong> {{ .InterestRate }}</p>
+                    <p><strong>Сезон:</strong> {{ .Season }}</p>
+                </div>
+            </div>
+            {{ end }}
+        </div>
+    </div>
+</body>
+</html>

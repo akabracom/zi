@@ -1,0 +1,39 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Калькулятор вкладов</title>
+    <link rel="stylesheet" href="/static/styles/list_style.css">
+</head>
+<body>
+    <header>
+        <h1>КАЛЬКУЛЯТОР ПРОЦЕНТОВ ПО ВКЛАДАМ</h1>
+    </header>
+    <div class="search-container">
+        <form action="/">
+            <input type="text" name="query" placeholder="Поиск по названию месяца:" value="{{ .query }}">
+            <button type="submit">Найти</button>
+        </form>
+    </div>
+    <h2 class="catalog-title">Банковские месяцы</h2>
+    <p class="catalog-subtitle">Рассчитайте проценты по вкладу для каждого месяца с учетом количества дней и ставок</p>
+    <div class="months-grid">
+        {{ range .months }}
+        <div class="month-card">
+            <img src="http://localhost:9000/img/{{ .Image }}">
+            <h2>{{ .Name }}</h2>
+            <p>Дней: {{ .Days }} | Ставка: {{ .InterestRate }}</p>
+            <a href="/month/{{ .ID }}"><button>Подробнее</button></a>
+        </div>
+        {{ end }}
+    </div>
+    
+    <a href="/calculation" class="calculation-icon">
+        <img src="http://127.0.0.1:9000/img/percent.png" alt="Расчет">
+        {{ if gt .calculationCount 0 }}
+        <span class="calculation-notification">{{ .calculationCount }}</span>
+        {{ end }}
+    </a>
+</body>
+</html>

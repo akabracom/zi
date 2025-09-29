@@ -1,0 +1,172 @@
+
+body {
+    background-color: #f8f9fa;
+    color: #333;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.5;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    padding: 15px 25px;
+    background-color: #5bd1d7;
+    color: #fff;
+}
+
+header h1 {
+    color: #fff;
+    font-size: 22px;
+    margin: 0;
+    font-weight: 700;
+}
+
+.home-link {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.calculation-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h2 {
+    color: #5bd1d7;
+    font-size: 28px;
+    text-align: center;
+    margin-bottom: 25px;
+    font-weight: 700;
+    margin-top: 10px;
+}
+
+.deposit-input {
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 8px;
+    border: 1px solid #e8e8e8;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.deposit-input h3 {
+    color: #d094ea;
+    font-size: 20px;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.input-group {
+    margin-bottom: 20px;
+    text-align: left;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.input-group label {
+    display: block;
+    color: #333;
+    font-weight: 600;
+    margin-bottom: 8px;
+    font-size: 16px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e8e8e8;
+    border-radius: 6px;
+    font-size: 16px;
+    box-sizing: border-box;
+    background-color: #fff;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: #d094ea;
+}
+
+.months-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.month-item {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #e8e8e8;
+}
+
+.month-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.month-image {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.month-item h3 {
+    color: #5bd1d7;
+    font-size: 18px;
+    margin: 0;
+    font-weight: 600;
+}
+
+.properties {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 6px;
+}
+
+.properties p {
+    color: #333;
+    font-size: 14px;
+    margin: 8px 0;
+    line-height: 1.4;
+}
+
+@media (max-width: 768px) {
+    .calculation-container {
+        padding: 15px;
+    }
+    
+    h2 {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+    
+    .month-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+    
+    .month-image {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .months-list {
+        gap: 15px;
+    }
+    
+    .month-item {
+        padding: 15px;
+    }
+}

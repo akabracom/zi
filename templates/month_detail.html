@@ -1,0 +1,42 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Детали месяца: {{ .month.Name }}</title>
+    <link rel="stylesheet" href="/static/styles/detail_style.css">
+</head>
+<body>
+    <header>
+        <a href="/" class="home-link">Домой</a>
+        <h1>КАЛЬКУЛЯТОР ПРОЦЕНТОВ ПО ВКЛАДАМ</h1>
+    </header>
+
+    <div class="month-details">
+        <h2>Детали месяца: {{ .month.Name }}</h2>
+        
+        <div class="details-content">
+            <div class="info">
+                <h3>Основная информация:</h3>
+                <ul>
+                    <li>Месяц: {{ .month.Name }}</li>
+                    <li>Категория: {{ .month.Category }}</li>
+                    <li>Описание: {{ .month.Description }}</li>
+                </ul>
+
+                <h3>Банковские параметры:</h3>
+                <ul>
+                    <li>Количество дней: {{ .month.Days }}</li>
+                    <li>Процентная ставка: {{ .month.InterestRate }}</li>
+                    <li>Сезон: {{ .month.Season }}</li>
+                    <li>Праздничные дни: {{ .month.Holidays }}</li>
+                </ul>
+            </div>
+
+            <div class="month-image">
+                <img src="http://127.0.0.1:9000/img/{{ .month.Image }}" alt="{{ .month.Name }}">
+            </div>
+        </div>
+    </div>
+</body>
+</html>

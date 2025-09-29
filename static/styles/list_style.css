@@ -1,0 +1,186 @@
+body {
+    background-color: #ffffff;
+    color: #333333;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #5bd1d7;
+    color: #ffffff;
+}
+
+h1 {
+    color: #ffffff;
+    font-size: 28px;
+    margin: 0;
+    font-weight: 700;
+}
+
+.search-container {
+    text-align: center;
+    margin: 25px auto;
+    width: 90%;
+    max-width: 500px;
+}
+
+.search-container form {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.search-container input[type="text"] {
+    padding: 12px 20px;
+    font-size: 16px;
+    width: 100%;
+    border: 2px solid #d094ea;
+    border-radius: 8px;
+    background-color: #fff;
+}
+
+.search-container input[type="text"]:focus {
+    outline: none;
+    border-color: #b87ed4;
+}
+
+.search-container button {
+    padding: 12px 25px;
+    font-size: 16px;
+    background-color: #d094ea;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-left: 10px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.catalog-title {
+    color: #5bd1d7;
+    font-size: 32px;
+    text-align: center;
+    margin: 20px 0 10px;
+    font-weight: 700;
+}
+
+.catalog-subtitle {
+    color: #666;
+    font-size: 16px;
+    text-align: center;
+    margin-bottom: 30px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.months-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.month-card {
+    border: 1px solid #e8e8e8;
+    padding: 20px;
+    text-align: center;
+    background-color: #fff;
+    border-radius: 8px;
+    height: 350px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.month-card img {
+    width: 120px;
+    height: 120px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.month-card h2 {
+    color: #5bd1d7;
+    font-size: 20px;
+    margin: 10px 0;
+    font-weight: 600;
+}
+
+.month-card p {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 15px;
+    line-height: 1.4;
+}
+
+.month-card a button {
+    padding: 10px 0;
+    background-color: #d094ea;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 85%;
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.calculation-icon {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    cursor: pointer;
+    z-index: 100;
+}
+
+.calculation-icon img {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+}
+
+.calculation-notification {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: #ff4757;
+    color: white;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .search-container {
+        width: 95%;
+    }
+    
+    .catalog-title {
+        font-size: 26px;
+    }
+    
+    .months-grid {
+        grid-template-columns: 1fr;
+        padding: 15px;
+    }
+    
+    .month-card {
+        height: auto;
+        min-height: 320px;
+    }
+}
