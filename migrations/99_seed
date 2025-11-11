@@ -1,0 +1,10 @@
+-- Демонстрационные данные
+INSERT INTO users (email, name) VALUES
+  ('student@example.com','Student')
+ON CONFLICT (email) DO NOTHING;
+
+INSERT INTO services (name, description, price) VALUES
+  ('Открытие вклада','Оформление депозита',0),
+  ('Расчёт процентов','Расчет доходности по ставке',0),
+  ('Консультация','Помощь специалиста',500.00)
+ON CONFLICT (name) DO NOTHING;

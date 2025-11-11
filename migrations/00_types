@@ -1,0 +1,8 @@
+-- Enum типа статуса заявки
+DO $$
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'request_status') THEN
+    CREATE TYPE request_status AS ENUM ('draft','deleted','formed','completed','rejected');
+  END IF;
+END
+$$;

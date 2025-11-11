@@ -1,0 +1,205 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2025-02-15T12:00:00.000Z",
+  "__export_source": "insomnia.desktop.app:v2025.1.0",
+  "resources": [
+    {
+      "_id": "wrk_services_requests",
+      "parentId": null,
+      "modified": 0,
+      "created": 0,
+      "name": "Deposits API",
+      "_type": "workspace"
+    },
+
+    {
+      "_id": "env_base",
+      "parentId": "wrk_services_requests",
+      "modified": 0,
+      "created": 0,
+      "name": "Base Environment",
+      "data": {
+        "base_url": "http://localhost:3001"
+      },
+      "_type": "environment"
+    },
+
+    {
+      "_id": "fld_services",
+      "parentId": "wrk_services_requests",
+      "name": "Домен услуги",
+      "_type": "request_group"
+    },
+    {
+      "_id": "fld_requests",
+      "parentId": "wrk_services_requests",
+      "name": "Домен заявки",
+      "_type": "request_group"
+    },
+    {
+      "_id": "fld_m2m",
+      "parentId": "wrk_services_requests",
+      "name": "Домен m2m",
+      "_type": "request_group"
+    },
+    {
+      "_id": "fld_user",
+      "parentId": "wrk_services_requests",
+      "name": "Домен пользователь",
+      "_type": "request_group"
+    },
+
+    {
+      "_id": "req_01",
+      "parentId": "fld_services",
+      "name": "GET /api/services — список услуг",
+      "method": "GET",
+      "url": "{{ base_url }}/api/services?query=&status=active",
+      "headers": [],
+      "_type": "request"
+    },
+    {
+      "_id": "req_02",
+      "parentId": "fld_services",
+      "name": "POST /api/services — создать услугу",
+      "method": "POST",
+      "url": "{{ base_url }}/api/services",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\"name\":\"Test\",\"price\":100}"
+      },
+      "_type": "request"
+    },
+    {
+      "_id": "req_03",
+      "parentId": "fld_services",
+      "name": "PUT /api/services/:id — изменить услугу",
+      "method": "PUT",
+      "url": "{{ base_url }}/api/services/1",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\"name\":\"Test Updated\",\"price\":200}"
+      },
+      "_type": "request"
+    },
+    {
+      "_id": "req_04",
+      "parentId": "fld_services",
+      "name": "DELETE /api/services/:id",
+      "method": "DELETE",
+      "url": "{{ base_url }}/api/services/1",
+      "_type": "request"
+    },
+    {
+      "_id": "req_05",
+      "parentId": "fld_services",
+      "name": "POST /api/services/:id/image — загрузить изображение",
+      "method": "POST",
+      "url": "{{ base_url }}/api/services/1/image",
+      "body": {
+        "mimeType": "multipart/form-data",
+        "params": [
+          {
+            "name": "image",
+            "type": "file",
+            "fileName": "test.png"
+          }
+        ]
+      },
+      "_type": "request"
+    },
+
+    {
+      "_id": "req_06",
+      "parentId": "fld_requests",
+      "name": "GET /api/requests — список заявок",
+      "method": "GET",
+      "url": "{{ base_url }}/api/requests",
+      "headers": [],
+      "_type": "request"
+    },
+    {
+      "_id": "req_07",
+      "parentId": "fld_requests",
+      "name": "GET /api/requests/draft — черновик",
+      "method": "GET",
+      "url": "{{ base_url }}/api/requests/draft",
+      "_type": "request"
+    },
+    {
+      "_id": "req_08",
+      "parentId": "fld_requests",
+      "name": "GET /api/requests/:id — заявка по ID",
+      "method": "GET",
+      "url": "{{ base_url }}/api/requests/1",
+      "_type": "request"
+    },
+    {
+      "_id": "req_09",
+      "parentId": "fld_requests",
+      "name": "PUT /api/requests/:id/submit — сформировать заявку",
+      "method": "PUT",
+      "url": "{{ base_url }}/api/requests/1/submit",
+      "_type": "request"
+    },
+    {
+      "_id": "req_10",
+      "parentId": "fld_requests",
+      "name": "PUT /api/requests/:id/complete — завершить",
+      "method": "PUT",
+      "url": "{{ base_url }}/api/requests/1/complete",
+      "_type": "request"
+    },
+
+    {
+      "_id": "req_11",
+      "parentId": "fld_m2m",
+      "name": "POST /api/requests/add-service — добавить услугу в заявку",
+      "method": "POST",
+      "url": "{{ base_url }}/api/requests/add-service",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\"service_id\":1}"
+      },
+      "_type": "request"
+    },
+    {
+      "_id": "req_12",
+      "parentId": "fld_m2m",
+      "name": "DELETE /api/requests/remove-service — удалить из заявки",
+      "method": "DELETE",
+      "url": "{{ base_url }}/api/requests/remove-service",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\"request_id\":1,\"service_id\":1}"
+      },
+      "_type": "request"
+    },
+
+    {
+      "_id": "req_13",
+      "parentId": "fld_user",
+      "name": "POST /api/auth/register",
+      "method": "POST",
+      "url": "{{ base_url }}/api/auth/register",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\"email\":\"new@example.com\",\"password\":\"12345\"}"
+      },
+      "_type": "request"
+    },
+    {
+      "_id": "req_14",
+      "parentId": "fld_user",
+      "name": "POST /api/auth/login",
+      "method": "POST",
+      "url": "{{ base_url }}/api/auth/login",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\"email\":\"student@example.com\",\"password\":\"12345\"}"
+      },
+      "_type": "request"
+    }
+  ]
+}
