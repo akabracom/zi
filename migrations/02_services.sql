@@ -1,0 +1,11 @@
+DROP TABLE IF EXISTS services CASCADE;
+
+CREATE TABLE services (
+  id SERIAL PRIMARY KEY,
+  name TEXT NOT NULL UNIQUE,
+  description TEXT,
+  price NUMERIC(12,2) NOT NULL,
+  is_active BOOLEAN NOT NULL DEFAULT TRUE,
+  image_url TEXT,
+  created_at TIMESTAMP NOT NULL DEFAULT NOW()
+);
