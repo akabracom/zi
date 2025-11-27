@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Заявка на вклады</title>
+    <link rel="stylesheet" href="/static/styles/calculation_style.css">
+</head>
+<body>
+    <header>
+        <a href="/" class="home-link">Вернуться</a>
+        <h1>ЗАЯВКА НА ВКЛАДЫ</h1>
+    </header>
+
+    <div class="cart-page">
+        <h2>Выбранные вклады</h2>
+
+        <div class="cart-items">
+            {{ if .months }}
+            {{ range .months }}
+            <div class="cart-item">
+                <img src="/static/img/{{ .Image }}" alt="{{ .Name }}">
+                <div class="item-details">
+                    <h3>Вклад «{{ .Name }}»</h3>
+                    <p>Ставка: <strong>{{ .InterestRate }}</strong></p>
+                    <p>Дней: <strong>{{ .Days }}</strong></p>
+                    <p>Период: <strong>{{ .StartDate }} — {{ .EndDate }}</strong></p>
+                    <p>Сумма вклада: <strong>{{ $.depositRequest.CommonAmount }} руб.</strong></p>
+                    <p>Прибыль: <strong>{{ .Profit }} руб.</strong></p>
+                </div>
+                <form action="/remove-from-cart/{{ .ID }}" method="POST">
+                    <button type="submit" class="btn-remove">Удалить</button>
+                </form>
+            </div>
+            {{ end }}
+            {{ else }}
+            <p>Корзина пуста</p>
+            {{ end }}
+        </div>
+
+        <!-- Итоги заявки (красивый блок) -->
+        <section class="summary-card" aria-label="Итоги заявки">
+            <div class="summary-item">
+                <div class="summary-label">Общая сумма вкладов</div>
+                <div class="summary-value">{{ .depositRequest.TotalAmount }} руб.</div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-label">Общая прибыль</div>
+                <div class="summary-value profit">{{ .depositRequest.TotalProfit }} руб.</div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

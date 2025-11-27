@@ -1,33 +1,38 @@
 package api
 
 import (
-	"deposit-calculator/internal/app/handler"
-	"deposit-calculator/internal/app/repository"
-	"log"
+    "log"
 
-	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
+    "deposit-calculator/internal/app/handler"
+    "deposit-calculator/internal/app/repository"
+
+    "github.com/gin-gonic/gin"
 )
 
-func StartServer() {
-	log.Println("Starting Deposit Calculator server")
+func Run() {
+    repo, err := repository.NewRepository()
+    if err != nil {
+        log.Fatalf("failed to init repository: %v", err)
+    }
 
-	repo, err := repository.NewRepository()
-	if err != nil {
-		logrus.Error("ошибка инициализации репозитория")
-	}
+    h := handler.NewHandler(repo)
+    // Предзаполнение корзины статическими данными (ID 1 и 2)
+    h.PrefillCart()
 
-	handler := handler.NewHandler(repo)
+    r := gin.Default()
+    r.LoadHTMLGlob("templates/*")
+    r.Static("/static", "./static")
 
-	r := gin.Default()
-	r.LoadHTMLGlob("templates/*.html")
-	r.Static("/static", "./static")
+    // Маршруты
+    r.GET("/", h.GetMonths)
+    r.GET("/month/:id", h.GetMonthDetail) // страница деталей
 
-	// Маршруты
-	r.GET("/", handler.GetMonths)                     // Главная страница
-	r.GET("/month/:id", handler.GetMonth)             // Страница месяца
-	r.GET("/calculation", handler.GetCalculationPage) // Страница расчета вклада
+    r.POST("/set-sum", h.SetCommonAmount)
+    r.POST("/add-to-cart", h.AddToCart)
+    r.POST("/remove-from-cart/:id", h.RemoveFromCart)
+    r.GET("/deposit-request/:id", h.GetDepositRequest)
 
-	r.Run()
-	log.Println("Server down")
+    if err := r.Run(":8080"); err != nil {
+        log.Fatalf("failed to run server: %v", err)
+    }
 }
