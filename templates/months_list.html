@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Калькулятор вкладов</title>
+    <link rel="stylesheet" href="/static/styles/list_style.css">
+</head>
+<body>
+    <header>
+        <h1>КАЛЬКУЛЯТОР ПРОЦЕНТОВ ПО ВКЛАДАМ</h1>
+    </header>
+
+    <!-- Поиск + Корзина -->
+    <div class="header-bar">
+        <form action="/" method="GET">
+            <input type="text" name="query" placeholder="Поиск..." value="{{ .query }}">
+            <button type="submit">Найти</button>
+        </form>
+
+        <a href="/deposit-request/{{ .depositRequest.ID }}" class="btn btn-cart" aria-label="Корзина">
+            <img src="/images/basket.png" alt="Cart" class="cart-icon">
+            {{ if gt .cartCount 0 }}
+            <span class="cart-count">{{ .cartCount }}</span>
+            {{ end }}
+        </a>
+    </div>
+
+    <h2 class="catalog-title">Банковские месяцы</h2>
+    <p class="catalog-subtitle">Рассчитайте проценты по вкладу для каждого месяца</p>
+
+    <!-- Таблица месяцев (все карточки в одной колонке, поля в одной строке) -->
+    <table class="months-table">
+        <thead>
+            <tr>
+                <th>Изображение</th>
+                <th>Название</th>
+                <th>Дней</th>
+                <th>Ставка</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{ range .months }}
+            <tr>
+                <td><img src="/images/{{ .Image }}" alt="{{ .Name }}" class="table-image"></td>
+                <td><strong>{{ .Name }}</strong></td>
+                <td>{{ .Days }}</td>
+                <td>{{ .InterestRate }}</td>
+                <td>
+                    <div class="btn-group">
+                        <a href="/month/{{ .ID }}">
+                            <button>Подробнее</button>
+                        </a>
+                        <form action="/add-to-cart" method="POST" style="display:inline; margin:0;">
+                            <input type="hidden" name="offer_id" value="{{ .ID }}">
+                            <button type="submit" class="btn-add-to-cart">Добавить в корзину</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            {{ end }}
+        </tbody>
+    </table>
+</body>
+</html>

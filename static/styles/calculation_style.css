@@ -1,0 +1,240 @@
+body {
+    background-color: #f8f9fa;
+    color: #333;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.5;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    padding: 15px 25px;
+    background-color: #009BFF;
+    color: #fff;
+}
+
+header h1 {
+    color: #fff;
+    font-size: 22px;
+    margin: 0;
+    font-weight: 700;
+}
+
+.home-link {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.calculation-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h2 {
+    color: #009BFF;
+    font-size: 28px;
+    text-align: center;
+    margin-bottom: 25px;
+    font-weight: 700;
+    margin-top: 10px;
+}
+
+.cart-page {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.cart-page h2 {
+    color: #009BFF;
+    font-size: 26px;
+    text-align: center;
+    margin-bottom: 25px;
+    font-weight: 700;
+}
+
+.cart-items { display: flex; flex-direction: column; gap: 20px; }
+
+.cart-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #e8e8e8;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.cart-item img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+.item-details { flex: 1; }
+
+.item-details h3 {
+    color: #5bd1d7;
+    font-size: 20px;
+    margin: 0 0 8px 0;
+    font-weight: 600;
+}
+
+.item-details p { margin: 5px 0; color: #333; font-size: 15px; }
+
+.btn-remove {
+    background-color: #ff4d4f;
+    color: #fff;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-remove:hover { background-color: #e63946; }
+
+.summary-card {
+    margin-top: 30px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+    background: #ffffff;
+    border: 1px solid #d6ecff;
+    border-radius: 12px;
+    padding: 18px;
+    box-shadow: 0 6px 20px rgba(0, 155, 255, 0.08);
+}
+
+.summary-item { background: #f7fbff; border: 1px solid #e6f2ff; border-radius: 10px; padding: 14px 16px; }
+.summary-label { font-size: 14px; color: #47607d; margin-bottom: 6px; font-weight: 600; }
+.summary-value { font-size: 22px; font-weight: 700; color: #0a2540; }
+.summary-value.profit { color: #0c7c3d; }
+
+@media (max-width: 768px) {
+    .cart-item { padding: 15px; }
+    .summary-card { padding: 14px; }
+    .summary-value { font-size: 20px; }
+}
+
+/* ====== Новые стили ====== */
+
+.common-amount-block {
+    max-width: 1000px;
+    margin: 0 auto 20px auto;
+    padding: 16px 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    border: 1px solid #d6ecff;
+    box-shadow: 0 2px 6px rgba(0, 155, 255, 0.06);
+}
+
+.common-amount-form {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.common-amount-form label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #47607d;
+}
+
+.common-amount-input {
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid #c4d9f5;
+    font-size: 14px;
+    max-width: 180px;
+    background-color: #ffffff;
+    color: #333333;
+}
+
+.btn-save-sum {
+    background-color: #009BFF;
+    color: #fff;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-save-sum:hover {
+    background-color: #0077cc;
+}
+
+.day-input {
+    width: 60px;
+    padding: 4px 6px;
+    border-radius: 6px;
+    border: 1px solid #c4d9f5;
+    font-size: 14px;
+    text-align: center;
+    margin: 0 4px;
+    background-color: #ffffff;
+    color: #333333;
+}
+
+.period-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #47607d;
+    margin-right: 6px;
+}
+
+.period-suffix {
+    font-size: 14px;
+    color: #47607d;
+    margin-left: 4px;
+}
+
+.btn-save {
+    margin-top: 16px;
+    background-color: #009BFF;
+    color: #fff;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-save:hover {
+    background-color: #0077cc;
+}
+
+/* Общие стили для всех input полей - светлый фон */
+input[type="text"],
+input[type="number"],
+input[type="email"],
+input[type="password"] {
+    background-color: #ffffff !important;
+    color: #333333 !important;
+    border: 1px solid #c4d9f5;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus {
+    background-color: #ffffff !important;
+    color: #333333 !important;
+    border-color: #009BFF;
+    outline: none;
+}

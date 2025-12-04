@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Заявка на вклады</title>
+    <link rel="stylesheet" href="/static/styles/calculation_style.css">
+</head>
+<body>
+<header>
+    <a href="/" class="home-link">Вернуться</a>
+    <h1>ЗАЯВКА НА ВКЛАДЫ</h1>
+</header>
+
+<div class="cart-page">
+    <h2>Выбранные вклады</h2>
+
+    <form action="/deposit-request/{{ .depositRequest.ID }}/save" method="POST">
+        <div class="common-amount-block">
+            <label for="common-sum">Сумма вклада (для всех вкладов):</label>
+            <input type="number"
+                   id="common-sum"
+                   name="sum"
+                   min="0"
+                   step="1000"
+                   value="{{ .depositRequest.CommonAmount }}"
+                   class="common-amount-input">
+        </div>
+
+        <div class="cart-items">
+            {{ if .months }}
+            {{ range .months }}
+            <div class="cart-item">
+                <img src="/images/{{ .Image }}" alt="{{ .Name }}">
+                <div class="item-details">
+                    <h3>Вклад «{{ .Name }}»</h3>
+                    <p>Ставка: <strong>{{ .InterestRate }}</strong></p>
+                    <p>Дней: <strong>{{ .Days }}</strong></p>
+
+                    <p>
+                        Период:
+                        <span class="period-label">{{ .Name }}</span>
+                        <input type="number"
+                               name="start_{{ .ID }}"
+                               min="1" max="{{ .Days }}"
+                               value="{{ .StartDate }}"
+                               class="day-input"> —
+                        <input type="number"
+                               name="end_{{ .ID }}"
+                               min="1" max="{{ .Days }}"
+                               value="{{ .EndDate }}"
+                               class="day-input">
+                        <span class="period-suffix">числа</span>
+                    </p>
+
+                    <p>Сумма вклада:
+                        <strong>{{ $.depositRequest.CommonAmount }} руб.</strong>
+                    </p>
+                    <p>Прибыль: <strong>{{ .Profit }} руб.</strong></p>
+                </div>
+
+                <form action="/remove-from-cart/{{ .ID }}" method="POST">
+                    <button type="submit" class="btn-remove">Удалить</button>
+                </form>
+            </div>
+            {{ end }}
+            {{ else }}
+            <p>Корзина пуста</p>
+            {{ end }}
+        </div>
+
+        {{ if .months }}
+        <button type="submit" class="btn-save">Сохранить сумму и даты</button>
+        {{ end }}
+    </form>
+
+    <section class="summary-card" aria-label="Итоги заявки">
+        <div class="summary-item">
+            <div class="summary-label">Общая сумма вкладов</div>
+            <div class="summary-value">{{ .depositRequest.TotalAmount }} руб.</div>
+        </div>
+        <div class="summary-item">
+            <div class="summary-label">Общая прибыль</div>
+            <div class="summary-value profit">{{ .depositRequest.TotalProfit }} руб.</div>
+        </div>
+    </section>
+</div>
+</body>
+</html>

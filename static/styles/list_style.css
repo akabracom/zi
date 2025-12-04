@@ -1,0 +1,325 @@
+/* static/styles/list_style.css */
+body {
+    background-color: #ffffff;
+    color: #333333;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #5bd1d7;
+    color: #ffffff;
+}
+
+h1 {
+    color: #ffffff;
+    font-size: 28px;
+    margin: 0;
+    font-weight: 700;
+}
+
+.catalog-title {
+    color: #5bd1d7;
+    font-size: 32px;
+    text-align: center;
+    margin: 20px 0 10px;
+    font-weight: 700;
+}
+
+.catalog-subtitle {
+    color: #666;
+    font-size: 16px;
+    text-align: center;
+    margin-bottom: 30px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.header-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    background-color: #ffffff;
+    margin: auto;
+    max-width: 500px;
+    width: 100%;
+    justify-content: flex-start;
+}
+
+.header-bar input[type="text"] {
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    flex-grow: 1;
+    max-width: 300px;
+    background-color: #ffffff;
+    color: #333333;
+}
+
+.header-bar button {
+    padding: 8px 15px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    background-color: #d094ea;
+    color: white;
+    cursor: pointer;
+}
+
+.header-bar button:hover {
+    background-color: #e046ff;
+}
+
+.months-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+    justify-items: center;
+}
+
+.months-grid > * {
+    max-width: 350px;
+    width: 100%;
+}
+
+.month-card {
+    border: 1px solid #e8e8e8;
+    padding: 20px;
+    text-align: center;
+    background-color: #fff;
+    border-radius: 8px;
+    height: 350px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-sizing: border-box;
+}
+
+.month-card img {
+    width: 120px;
+    height: 120px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.month-card h2 {
+    color: #5bd1d7;
+    font-size: 20px;
+    margin: 10px 0;
+    font-weight: 600;
+}
+
+.month-card p {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 15px;
+    line-height: 1.4;
+}
+
+/* Кнопка "Подробнее" */
+.month-card a button {
+    padding: 10px 0;
+    background-color: #d094ea;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 85%;
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.month-card a button:hover {
+    background-color: #e046ff;
+}
+
+/* Кнопка "Добавить в корзину" */
+.btn-add-to-cart {
+    padding: 10px 0;
+    background-color: #874caf;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 85%;
+    font-weight: 600;
+    font-size: 15px;
+    margin-top: 8px;
+}
+
+.btn-add-to-cart:hover {
+    background-color: #7c33a0;
+}
+
+/* Группа кнопок */
+.btn-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.btn {
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s, transform 0.2s;
+    color: white;
+    display: inline-block;
+    text-decoration: none;
+}
+
+.btn:hover {
+    transform: scale(1.05);
+    opacity: 0.9;
+}
+
+.btn-cart {
+    background-color: #ffffff;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: visible;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+}
+
+.btn-cart:hover {
+    background-color: #d4d4d4;
+}
+
+.btn-cart img.cart-icon {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    vertical-align: middle;
+}
+
+.cart-count {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background-color: #ff4757;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 12px;
+    font-weight: bold;
+    z-index: 1000;
+    border: 2px solid #fff;
+}
+
+.btn-calculate {
+    background-color: #d094ea;
+}
+
+.btn-calculate:hover {
+    background-color: #d094ea;
+}
+
+.btn:active {
+    transform: scale(0.95);
+}
+
+/* Таблица месяцев */
+.months-table {
+    width: 100%;
+    max-width: 1200px;
+    margin: 20px auto;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.months-table thead {
+    background-color: #5bd1d7;
+    color: #fff;
+}
+
+.months-table th {
+    padding: 15px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.months-table td {
+    padding: 15px;
+    border-bottom: 1px solid #e8e8e8;
+    vertical-align: middle;
+}
+
+.months-table tbody tr:hover {
+    background-color: #f5f5f5;
+}
+
+.months-table .table-image {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.months-table .btn-group {
+    display: flex;
+    gap: 8px;
+    flex-direction: row;
+}
+
+.months-table .btn-group button {
+    padding: 8px 15px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.months-table .btn-group a button {
+    background-color: #d094ea;
+    color: #fff;
+}
+
+.months-table .btn-group a button:hover {
+    background-color: #e046ff;
+}
+
+.months-table .btn-add-to-cart {
+    background-color: #874caf;
+    color: #fff;
+}
+
+.months-table .btn-add-to-cart:hover {
+    background-color: #7c33a0;
+}
+
+@media (max-width: 768px) {
+    .catalog-title { font-size: 26px; }
+    .months-grid { grid-template-columns: 1fr; padding: 15px; }
+    .month-card { height: auto; min-height: 320px; }
+    .btn-group { flex-direction: row; }
+    .btn-group > * { flex: 1; }
+    .months-table { font-size: 14px; }
+    .months-table th, .months-table td { padding: 10px; }
+    .months-table .table-image { width: 60px; height: 60px; }
+}
