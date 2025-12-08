@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { addServiceToDraft, getDraftRequest, getServices } from '../api/http'
 import type { Service } from '../api/types'
@@ -12,6 +12,8 @@ export function ServicesPage() {
   const [services, setServices] = useState<Service[]>([])
   // Читаем query из URL параметров, если есть
   const [query, setQuery] = useState(searchParams.get('q') || '')
+  // Флаг для отслеживания, что query изменился из-за навигации, а не ввода
+  const isNavigatingRef = useRef(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [info, setInfo] = useState<string | null>(null)
@@ -78,37 +80,47 @@ export function ServicesPage() {
     }
   }
 
-  // Синхронизируем query с URL параметрами при изменении searchParams
+  // Синхронизируем query с URL параметрами только при изменении searchParams (навигация)
   useEffect(() => {
     const urlQuery = searchParams.get('q') || ''
+    // Обновляем только если URL изменился (при навигации)
     if (urlQuery !== query) {
+      isNavigatingRef.current = true // Помечаем, что это навигация
       setQuery(urlQuery)
     }
-  }, [searchParams, query])
+  }, [searchParams]) // Только searchParams, чтобы не было цикла
 
-  // Загружаем данные при изменении query
+  // Загружаем данные при изменении query, но только если это навигация
+  useEffect(() => {
+    if (isNavigatingRef.current) {
+      isNavigatingRef.current = false // Сбрасываем флаг
+      void load()
+    }
+  }, [query])
+
+  // Загружаем данные при первой загрузке
   useEffect(() => {
     void load()
     void loadCartCount()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [query])
+  }, [])
 
   async function handleSearch(e: React.FormEvent) {
     e.preventDefault()
     // Обновляем URL параметры при поиске
-    if (query) {
-      setSearchParams({ q: query })
+    if (query.trim()) {
+      setSearchParams({ q: query.trim() })
     } else {
       setSearchParams({})
     }
+    // Загружаем данные после обновления URL
     await load()
   }
 
-  // Обновляем URL при изменении поля ввода (опционально, можно убрать)
+  // Просто обновляем состояние при вводе, без изменения URL
   function handleQueryChange(newQuery: string) {
     setQuery(newQuery)
-    // Можно обновлять URL в реальном времени или только при submit
-    // Для демонстрации обновляем только при submit
+    // URL обновляется только при submit (в handleSearch)
   }
 
   async function handleAddToDraft(serviceId: number) {
