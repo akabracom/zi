@@ -3,7 +3,6 @@ import {
   getDraftRequest,
   removeServiceFromRequest,
   submitRequest,
-  updateServiceQuantity,
 } from '../api/http'
 import type { Request } from '../api/types'
 
