@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { addServiceToDraft, getDraftRequest, getServices } from '../api/http'
 import type { Service } from '../api/types'
 import { useAuth, useRole } from '../context/AuthContext'
@@ -8,8 +8,10 @@ import { useAuth, useRole } from '../context/AuthContext'
 const USE_MOCK = import.meta.env.VITE_USE_MOCK === 'true' || false
 
 export function ServicesPage() {
+  const [searchParams, setSearchParams] = useSearchParams()
   const [services, setServices] = useState<Service[]>([])
-  const [query, setQuery] = useState('')
+  // Читаем query из URL параметров, если есть
+  const [query, setQuery] = useState(searchParams.get('q') || '')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [info, setInfo] = useState<string | null>(null)
@@ -76,15 +78,37 @@ export function ServicesPage() {
     }
   }
 
+  // Синхронизируем query с URL параметрами при изменении searchParams
+  useEffect(() => {
+    const urlQuery = searchParams.get('q') || ''
+    if (urlQuery !== query) {
+      setQuery(urlQuery)
+    }
+  }, [searchParams, query])
+
+  // Загружаем данные при изменении query
   useEffect(() => {
     void load()
     void loadCartCount()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [query])
 
   async function handleSearch(e: React.FormEvent) {
     e.preventDefault()
+    // Обновляем URL параметры при поиске
+    if (query) {
+      setSearchParams({ q: query })
+    } else {
+      setSearchParams({})
+    }
     await load()
+  }
+
+  // Обновляем URL при изменении поля ввода (опционально, можно убрать)
+  function handleQueryChange(newQuery: string) {
+    setQuery(newQuery)
+    // Можно обновлять URL в реальном времени или только при submit
+    // Для демонстрации обновляем только при submit
   }
 
   async function handleAddToDraft(serviceId: number) {
@@ -113,7 +137,7 @@ export function ServicesPage() {
             type="search"
             placeholder="Поиск по названию месяца..."
             value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            onChange={(e) => handleQueryChange(e.target.value)}
           />
           <button
             type="submit"
