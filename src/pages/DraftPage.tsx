@@ -157,23 +157,6 @@ export function DraftPage() {
     return { totalAmount, totalProfit, averageRate }
   }, [draft, commonAmount, editableItems])
 
-  async function handleQuantityChange(
-    requestId: number,
-    serviceId: number,
-    quantity: number,
-  ) {
-    if (quantity < 1) return
-    setError(null)
-    try {
-      await updateServiceQuantity(requestId, serviceId, quantity)
-      await loadDraft()
-    } catch (err) {
-      setError(
-        err instanceof Error ? err.message : 'Не удалось обновить количество',
-      )
-    }
-  }
-
   async function handleRemove(requestId: number, serviceId: number) {
     setError(null)
     if (!confirm('Удалить этот вклад из заявки?')) return

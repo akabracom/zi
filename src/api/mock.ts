@@ -1,4 +1,4 @@
-import type { Service, Request, RequestService } from './types'
+import type { Service, Request } from './types'
 
 // Mock данные для демонстрации без бэкенда
 // Ставки соответствуют 2-й лабе (di_web)

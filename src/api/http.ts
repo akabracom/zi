@@ -5,7 +5,7 @@ import type {
   Request,
   Service,
 } from './types'
-import { filterMockServices, mockDraft, mockServices } from './mock'
+import { filterMockServices, mockDraft } from './mock'
 
 // Флаг для переключения между mock и реальным API
 // Установите USE_MOCK=true в .env или измените здесь для демонстрации без бэкенда
