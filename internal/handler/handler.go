@@ -70,6 +70,17 @@ func (h *Handler) Register(c *gin.Context) {
         log.Printf("Failed to save session to Redis: %v", err)
     }
 
+    // Сохраняем токен в cookie для демонстрации
+    c.SetCookie(
+        "session_token",           // имя cookie
+        token,                     // значение (JWT токен)
+        3600*24,                   // время жизни (24 часа в секундах)
+        "/",                       // путь
+        "localhost",               // домен
+        false,                     // secure (false для localhost)
+        true,                      // httpOnly (защита от XSS)
+    )
+
     c.JSON(http.StatusCreated, models.AuthResponse{
         Token: token,
         User:  *user,
@@ -119,6 +130,17 @@ func (h *Handler) Login(c *gin.Context) {
     if err := cache.SaveUserSession(user.ID, user.Email, user.Role); err != nil {
         log.Printf("Failed to save session to Redis: %v", err)
     }
+
+    // Сохраняем токен в cookie для демонстрации
+    c.SetCookie(
+        "session_token",           // имя cookie
+        token,                     // значение (JWT токен)
+        3600*24,                   // время жизни (24 часа в секундах)
+        "/",                       // путь
+        "localhost",               // домен
+        false,                     // secure (false для localhost)
+        true,                      // httpOnly (защита от XSS)
+    )
 
     c.JSON(http.StatusOK, models.AuthResponse{
         Token: token,
@@ -253,7 +275,7 @@ func (h *Handler) UploadServiceImage(c *gin.Context) {
     if ext == "" {
         ext = ".png"
     }
-    objectName := fmt.Sprintf("images/service_%d%s", id, ext)
+    objectName := fmt.Sprintf("img/service_%d%s", id, ext)
 
     fileHandle, err := file.Open()
     if err != nil {
@@ -267,12 +289,14 @@ func (h *Handler) UploadServiceImage(c *gin.Context) {
         return
     }
 
-    if err := h.repo.UpdateServiceImage(id, objectName); err != nil {
+    // Сохраняем в БД только имя файла (без префикса img/)
+    imageName := filepath.Base(objectName)
+    if err := h.repo.UpdateServiceImage(id, imageName); err != nil {
         c.JSON(http.StatusInternalServerError, gin.H{"error": "db update failed"})
         return
     }
 
-    c.JSON(http.StatusOK, gin.H{"image_url": "/images/" + objectName})
+    c.JSON(http.StatusOK, gin.H{"image_url": "/images/" + imageName})
 }
 
 // ===================== REQUESTS =====================

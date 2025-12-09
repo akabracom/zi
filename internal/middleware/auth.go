@@ -10,32 +10,43 @@ import (
 )
 
 // AuthMiddleware проверяет JWT токен (опционально - для гостей)
+// Поддерживает токен из заголовка Authorization или из cookie
 func AuthMiddleware(optional bool) gin.HandlerFunc {
     return func(c *gin.Context) {
-        authHeader := c.GetHeader("Authorization")
+        var tokenString string
         
-        // Если токен не передан
-        if authHeader == "" {
+        // Сначала проверяем заголовок Authorization
+        authHeader := c.GetHeader("Authorization")
+        if authHeader != "" {
+            // Формат: "Bearer <token>"
+            parts := strings.Split(authHeader, " ")
+            if len(parts) == 2 && parts[0] == "Bearer" {
+                tokenString = parts[1]
+            }
+        }
+        
+        // Если токен не найден в заголовке, проверяем cookie
+        if tokenString == "" {
+            cookieToken, err := c.Cookie("session_token")
+            if err == nil && cookieToken != "" {
+                tokenString = cookieToken
+            }
+        }
+        
+        // Если токен не передан ни в заголовке, ни в cookie
+        if tokenString == "" {
             if optional {
                 // Гость - продолжаем с ролью "guest"
                 c.Set("role", "guest")
                 c.Next()
                 return
             }
-            c.JSON(http.StatusUnauthorized, gin.H{"error": "authorization header required"})
+            c.JSON(http.StatusUnauthorized, gin.H{"error": "authorization header or cookie required"})
             c.Abort()
             return
         }
 
-        // Формат: "Bearer <token>"
-        parts := strings.Split(authHeader, " ")
-        if len(parts) != 2 || parts[0] != "Bearer" {
-            c.JSON(http.StatusUnauthorized, gin.H{"error": "invalid authorization header format"})
-            c.Abort()
-            return
-        }
-
-        tokenString := parts[1]
+        // Валидируем токен
         claims, err := auth.ValidateToken(tokenString)
         if err != nil {
             c.JSON(http.StatusUnauthorized, gin.H{"error": "invalid or expired token"})

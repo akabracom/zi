@@ -98,7 +98,7 @@ definitions:
 host: localhost:3001
 info:
   contact: {}
-  description: API для управления заявками и услугами с JWT авторизацией
+  description: API для управления заявками и услугами с JWT авторизацией и Redis
   title: Deposits API
   version: "1.0"
 paths:
@@ -524,4 +524,10 @@ paths:
       summary: Upload service image
       tags:
       - services
+securityDefinitions:
+  BearerAuth:
+    description: Type "Bearer" followed by a space and JWT token.
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

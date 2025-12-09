@@ -1,7 +1,7 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "API для управления заявками и услугами с JWT авторизацией",
+        "description": "API для управления заявками и услугами с JWT авторизацией и Redis",
         "title": "Deposits API",
         "contact": {},
         "version": "1.0"
@@ -824,6 +824,14 @@
                     "type": "string"
                 }
             }
+        }
+    },
+    "securityDefinitions": {
+        "BearerAuth": {
+            "description": "Type \"Bearer\" followed by a space and JWT token.",
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     }
 }

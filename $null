@@ -1,0 +1,5 @@
+Error response from daemon: No such container: deposits-db
+Error response from daemon: No such container: minio
+Error response from daemon: No such container: deposits-app
+Error response from daemon: No such container: adminer
+Error response from daemon: No such container: redis

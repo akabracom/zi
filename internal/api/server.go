@@ -2,9 +2,12 @@ package api
 
 import (
     "context"
+    "fmt"
+    "io"
     "log"
     "net/http"
     "os"
+    "strings"
 
     "backend/internal/handler"
     "backend/internal/middleware"
@@ -19,15 +22,6 @@ import (
 var router *gin.Engine
 var h *handler.Handler
 
-// @title Deposits API
-// @version 1.0
-// @description API для управления заявками и услугами
-// @host localhost:3001
-// @BasePath /api
-// @securityDefinitions.apikey BearerAuth
-// @in header
-// @name Authorization
-// @description Type "Bearer" followed by a space and JWT token.
 func Setup(handler *handler.Handler) {
     h = handler
     router = gin.Default()
@@ -38,15 +32,108 @@ func Setup(handler *handler.Handler) {
     // Прокси для MinIO изображений
     router.GET("/images/:name", func(c *gin.Context) {
         name := c.Param("name")
-        obj, err := h.Minio.Client.GetObject(context.Background(), h.Minio.BucketName, "images/"+name, minioClient.GetObjectOptions{})
+        // Поддерживаем оба формата: с префиксом img/ и без
+        objectPath := name
+        if !strings.HasPrefix(name, "img/") {
+            objectPath = "img/" + name
+        }
+        log.Printf("Requesting image: bucket=%s, path=%s", h.Minio.BucketName, objectPath)
+        
+        // Сначала получаем информацию об объекте
+        objInfo, err := h.Minio.Client.StatObject(context.Background(), h.Minio.BucketName, objectPath, minioClient.StatObjectOptions{})
         if err != nil {
-            c.String(http.StatusNotFound, "Image not found")
+            log.Printf("Image not found in MinIO: %v, path=%s", err, objectPath)
+            // CORS заголовки для ошибки
+            c.Header("Access-Control-Allow-Origin", "*")
+            c.String(http.StatusNotFound, "Image not found: "+name)
+            return
+        }
+        
+        log.Printf("Object info: size=%d, content-type=%s, etag=%s", objInfo.Size, objInfo.ContentType, objInfo.ETag)
+        
+        // Теперь получаем сам объект
+        obj, err := h.Minio.Client.GetObject(context.Background(), h.Minio.BucketName, objectPath, minioClient.GetObjectOptions{})
+        if err != nil {
+            log.Printf("Failed to get image object: %v", err)
+            // CORS заголовки для ошибки
+            c.Header("Access-Control-Allow-Origin", "*")
+            c.String(http.StatusNotFound, "Image not found: "+name)
             return
         }
         defer obj.Close()
-        objInfo, _ := obj.Stat()
-        c.Header("Content-Type", objInfo.ContentType)
-        c.DataFromReader(http.StatusOK, objInfo.Size, objInfo.ContentType, obj, nil)
+        
+        // Устанавливаем правильный Content-Type
+        contentType := objInfo.ContentType
+        if contentType == "" || contentType == "application/octet-stream" {
+            // Определяем по расширению
+            if len(name) > 4 && name[len(name)-4:] == ".png" {
+                contentType = "image/png"
+            } else if len(name) > 4 && name[len(name)-4:] == ".jpg" {
+                contentType = "image/jpeg"
+            } else {
+                contentType = "image/png"
+            }
+        }
+        
+        log.Printf("Serving image: %s, size=%d, content-type=%s", name, objInfo.Size, contentType)
+        
+        // Читаем все данные из объекта
+        data, err := io.ReadAll(obj)
+        if err != nil {
+            log.Printf("Failed to read image: %v", err)
+            // CORS заголовки для ошибки
+            c.Header("Access-Control-Allow-Origin", "*")
+            c.String(http.StatusInternalServerError, "Failed to read image")
+            return
+        }
+        
+        if int64(len(data)) != objInfo.Size {
+            log.Printf("Warning: read %d bytes, expected %d", len(data), objInfo.Size)
+        }
+        
+        log.Printf("Successfully read %d bytes for image %s", len(data), name)
+        
+        // Проверяем, что это валидный PNG (должен начинаться с PNG signature)
+        if len(data) >= 8 {
+            pngSignature := []byte{0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A}
+            actualSignature := data[:8]
+            if string(actualSignature) != string(pngSignature) {
+                log.Printf("ERROR: Image %s does not have valid PNG signature. First 8 bytes (hex): %x, expected: %x", name, actualSignature, pngSignature)
+                previewLen := 100
+                if len(data) < previewLen {
+                    previewLen = len(data)
+                }
+                log.Printf("First %d bytes (hex): %x", previewLen, data[:previewLen])
+                log.Printf("First %d bytes (ASCII): %s", previewLen, string(data[:previewLen]))
+                // CORS заголовки для ошибки
+                c.Header("Access-Control-Allow-Origin", "*")
+                c.String(http.StatusInternalServerError, fmt.Sprintf("Invalid image format: %s is not a valid PNG file", name))
+                return
+            } else {
+                log.Printf("Image %s has valid PNG signature", name)
+            }
+        }
+        
+        // Устанавливаем все заголовки ПЕРЕД отправкой данных
+        c.Header("Access-Control-Allow-Origin", "*")
+        c.Header("Access-Control-Allow-Methods", "GET, OPTIONS")
+        c.Header("Access-Control-Allow-Headers", "Content-Type")
+        c.Header("Content-Type", contentType)
+        c.Header("Cache-Control", "public, max-age=31536000")
+        c.Header("Content-Length", fmt.Sprintf("%d", len(data)))
+        c.Header("Accept-Ranges", "bytes")
+        c.Header("X-Content-Type-Options", "nosniff")
+        
+        // Используем стандартный метод Gin для отправки данных
+        c.Data(http.StatusOK, contentType, data)
+    })
+    
+    // OPTIONS для CORS preflight
+    router.OPTIONS("/images/:name", func(c *gin.Context) {
+        c.Header("Access-Control-Allow-Origin", "*")
+        c.Header("Access-Control-Allow-Methods", "GET, OPTIONS")
+        c.Header("Access-Control-Allow-Headers", "Content-Type")
+        c.Status(http.StatusNoContent)
     })
 
     // API
